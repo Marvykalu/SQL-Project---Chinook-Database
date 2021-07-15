@@ -1,0 +1,46 @@
+SELECT g.Name, COUNT(*)  TotalTracks
+			FROM Genre g
+			JOIN Track t ON g.Genreid = t.Genreid
+			JOIN InvoiceLine il ON il.Trackid = t.Trackid
+GROUP BY g.name
+ORDER BY TotalTracks DESC
+
+SELECT a.Name, g.Name, COUNT(*)  TotalTracks
+FROM Artist a
+JOIN Album al ON al.ArtistId = a.ArtistId
+JOIN Track t ON t.AlbumId = al.AlbumId
+JOIN  Genre g ON g.Genreid = t.Genreid
+WHERE g.Name = 'Rock'
+GROUP BY 1,2
+ORDER BY TotalTracks DESC
+
+
+SELECT g.Name, a.Name, COUNT(t.trackid) TotalTrack, SUM(il.UnitPrice * il.Quantity) Earning
+FROM Artist a
+JOIN Album al ON al.ArtistId = a.ArtistId
+JOIN Track t ON t.AlbumId = al.AlbumId
+JOIN  Genre g ON g.Genreid = t.Genreid
+JOIN InvoiceLine il ON il.TrackId = t.TrackId
+WHERE g.Name = 'Rock'
+GROUP BY 1,2
+ORDER BY Earning DESC
+LIMIT 10
+
+
+
+SELECT al.Title , a.Name, g.Name, SUM(il.Quantity * il.UnitPrice) Amount
+FROM Album al
+JOIN Artist a ON al.ArtistId = a.ArtistId
+JOIN Track t ON t.AlbumId = al.AlbumId
+JOIN InvoiceLine il ON il.TrackId = t.TrackId
+JOIN Genre g ON t.GenreId = g.GenreId
+WHERE a.Name = 'U2'
+GROUP BY 1,2,3
+HAVING g.Name = 'Rock'
+ORDER BY 4 DESC 
+LIMIT 5
+
+
+
+
+
